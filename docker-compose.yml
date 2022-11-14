@@ -58,10 +58,29 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      # - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      # - '--collector.systemd'
+      - '--collector.processes'
     restart: unless-stopped
     expose:
       - 9100
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  processexporter:
+    image: ncabatoff/process-exporter
+    container_name: process-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - ./:/config
+    command:
+      - '--procfs=/host/proc'
+      - '-config.path=/config/config.yml'
+    restart: unless-stopped
+    expose:
+      - 9256
     networks:
       - monitor-net
     labels:

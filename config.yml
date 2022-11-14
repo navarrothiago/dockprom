@@ -1,0 +1,13 @@
+process_names:
+  - comm:
+    - chromium-browse
+    - bash
+    - prometheus
+    - gvim
+    - core_l1_tests
+  - exe:
+    - /sbin/upstart
+    -
+    cmdline:
+    - --user
+    name: upstart:-user
